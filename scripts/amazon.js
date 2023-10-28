@@ -77,8 +77,16 @@ document.querySelectorAll(`.js_add_to_cart_button`).forEach( (add_button) => {
          }
          )
        }
+       
+       let cart_quantity = 0;
+
+      cart.forEach((cart_items) => {
+        cart_quantity+= cart_items.quantity
+      })
+      document.querySelector(`.cart-quantity`).innerHTML = cart_quantity
+      
  
      
-     console. log(cart)
+     
    })
 })
