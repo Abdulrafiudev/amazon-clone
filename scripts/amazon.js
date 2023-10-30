@@ -1,5 +1,6 @@
-
+import {cart} from "../data/cart.js"
 let product_html = ``
+
 
 products.forEach((product) => {
   product_html += `
@@ -42,7 +43,7 @@ products.forEach((product) => {
 
       <div class="product-spacer"></div>
 
-      <div class="added-to-cart">
+      <div class="added-to-cart cart_added${product.id}">
         <img src="images/icons/checkmark.png">
         Added
       </div>
@@ -54,7 +55,7 @@ products.forEach((product) => {
     
 })
 
-
+let time_interval;
 
 document.querySelector(`.products-grid`).innerHTML = product_html
 
@@ -62,18 +63,23 @@ document.querySelector(`.products-grid`).innerHTML = product_html
 
 
 document.querySelectorAll(`.js_add_to_cart_button`).forEach( (add_button) => {
+
    add_button.addEventListener(`click`, () => {
-    
     
      let matching_items;
      let product_id = add_button.dataset.productId 
+
+     document.querySelector(`.cart_added${product_id}`)
+
      cart.forEach((items) => {
        if (product_id === items.product_id){
         matching_items = items;
        }
       })
       let select_button = document.querySelector(`.js_quantity_selector_${product_id}`)
+
       let value = Number(select_button.value)
+
        if (matching_items){
         matching_items.quantity += value
        }
@@ -92,6 +98,20 @@ document.querySelectorAll(`.js_add_to_cart_button`).forEach( (add_button) => {
       cart.forEach((cart_items) => {
         cart_quantity+= cart_items.quantity
       })
+      
+      document.querySelector(`.cart_added${product_id}`).classList.add(`added_to_cart`)
+
+      clearTimeout(time_interval)
+     
+
+      time_interval = setTimeout(() => {
+        
+        document.querySelector(`.cart_added${product_id}`).classList.remove(`added_to_cart`)
+      }, 2000)
+
+     
+
+      
       document.querySelector(`.cart-quantity`).innerHTML = cart_quantity
       
  
