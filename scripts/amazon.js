@@ -1,5 +1,7 @@
 import { products } from "../data/products.js"
 import {cart, add_to_cart} from "../data/cart.js"
+
+JSON.parse(localStorage.getItem(`cart_quantity`))
 let product_html = ``
 
 
@@ -56,6 +58,8 @@ products.forEach((product) => {
     
 })
 
+document.querySelector(`.products-grid`).innerHTML = product_html
+
 let time_interval;
 
 
@@ -66,6 +70,8 @@ function update_cart_quantity(){
         cart_quantity+= cart_items.quantity
       })
    document.querySelector(`.cart-quantity`).innerHTML = cart_quantity
+
+   localStorage.setItem(`cart_quantity`, JSON.stringify(cart_quantity))
 }
 
 
@@ -85,7 +91,7 @@ function display_cart_added(product_id){
 
 }
 
-document.querySelector(`.products-grid`).innerHTML = product_html
+
 
 
 

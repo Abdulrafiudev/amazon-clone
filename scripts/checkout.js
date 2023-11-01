@@ -109,6 +109,7 @@ document.querySelectorAll(`.delete-quantity-link`).forEach((delete_link) => {
     delete_link.addEventListener(`click`, () => {
       let product_id = delete_link.dataset.productId;
       remove_from_cart(product_id)
+      console.log(cart)
       let container = document.querySelector(`.js-cart-item-container-${product_id}`)
       container.remove()
     })
