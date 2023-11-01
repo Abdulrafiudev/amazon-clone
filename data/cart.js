@@ -38,3 +38,13 @@ export function add_to_cart(product_id){
    
 
 }
+export function remove_from_cart(product_id){
+   let new_cart = [];
+   cart.forEach((cart_item) => {
+      if (cart_item.product_id !== product_id){
+        new_cart.push(cart_item)
+      }
+   })
+
+   cart = new_cart
+}
