@@ -1,7 +1,7 @@
 import { products } from "../data/products.js"
 import {cart, add_to_cart} from "../data/cart.js"
+ update_cart_quantity()
 
-JSON.parse(localStorage.getItem(`cart_quantity`))
 let product_html = ``
 
 
@@ -71,7 +71,7 @@ function update_cart_quantity(){
       })
    document.querySelector(`.cart-quantity`).innerHTML = cart_quantity
 
-   localStorage.setItem(`cart_quantity`, JSON.stringify(cart_quantity))
+   
 }
 
 

@@ -1,6 +1,7 @@
-import {cart, remove_from_cart} from "../data/cart.js"
+import {cart, remove_from_cart, calculate_cart_quantity} from "../data/cart.js"
 import {products} from "../data/products.js"
 
+calculate_cart_quantity()
 let cart_summary_html=``;
 
 
@@ -103,6 +104,9 @@ cart.forEach((cart_items) => {
 
 
 })
+
+
+
 document.querySelector(`.order-summary`).innerHTML= cart_summary_html
 
 document.querySelectorAll(`.delete-quantity-link`).forEach((delete_link) => {
@@ -112,5 +116,6 @@ document.querySelectorAll(`.delete-quantity-link`).forEach((delete_link) => {
       console.log(cart)
       let container = document.querySelector(`.js-cart-item-container-${product_id}`)
       container.remove()
+      
     })
 })

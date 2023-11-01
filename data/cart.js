@@ -54,3 +54,13 @@ export function remove_from_cart(product_id){
 
    save_to_storage()
 }
+ export function calculate_cart_quantity(){
+  let cart_quantity = 0;
+
+  cart.forEach((cart_items) => {
+       cart_quantity+= cart_items.quantity
+     })
+     document.querySelector(`.return-to-home-link`).innerHTML = `${cart_quantity} items`
+
+  
+}
