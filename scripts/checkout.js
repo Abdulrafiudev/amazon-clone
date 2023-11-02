@@ -1,4 +1,4 @@
-import {cart, remove_from_cart, calculate_cart_quantity} from "../data/cart.js"
+import {cart, remove_from_cart, calculate_cart_quantity, update_quantity} from "../data/cart.js"
 import {products} from "../data/products.js"
 
 calculate_cart_quantity()
@@ -37,11 +37,13 @@ cart.forEach((cart_items) => {
                   </div>
                   <div class="product-quantity">
                     <span>
-                      Quantity: <span class="quantity-label">${cart_items.quantity}</span>
+                      Quantity: <span class="quantity-label js_quantity_label_${matching_products.id}">${cart_items.quantity}</span>
                     </span>
-                    <span class="update-quantity-link link-primary">
+                    <span class="update-quantity-link link-primary" data-product-id = "${matching_products.id}">
                       Update
                     </span>
+                    <input class = "quantity_input input_${matching_products.id}" data-product-id = "${matching_products.id}">
+                    <span class= "save_quantity_link link-primary save_${matching_products.id}" data-product-id = "${matching_products.id}"> save </span>
                     <span class="delete-quantity-link link-primary" data-product-id = "${matching_products.id}">
                       Delete
                     </span>
@@ -113,9 +115,96 @@ document.querySelectorAll(`.delete-quantity-link`).forEach((delete_link) => {
     delete_link.addEventListener(`click`, () => {
       let product_id = delete_link.dataset.productId;
       remove_from_cart(product_id)
-      console.log(cart)
+      
       let container = document.querySelector(`.js-cart-item-container-${product_id}`)
       container.remove()
-      
+      calculate_cart_quantity()
     })
+});
+
+
+document.querySelectorAll(`.update-quantity-link`).forEach((update_link) => {
+   update_link.addEventListener(`click`, () => {
+
+    let product_id = update_link.dataset.productId;
+    console.log(product_id)
+
+    //document.querySelector(`.input_${product_id}`).classList.add(`display`)
+    //document.querySelector(`.save_${product_id}`).classList.add(`display`)
+
+    let container = document.querySelector(`.js-cart-item-container-${product_id}`)
+    container.classList.add(`is_editing_quantity`)
+
+     
+    
+  
+  
+   })
+})
+
+document.querySelectorAll(`.save_quantity_link`).forEach((save_link) => {
+
+  save_link.addEventListener(`click`, () => {
+
+   
+    let product_id = save_link.dataset.productId;
+    console.log(product_id)
+    let input_button = document.querySelector(`.input_${product_id}`).value
+
+    let new_value = Number(input_button)
+
+    
+
+    update_quantity(product_id, new_value)
+    if (new_value < 0 ){
+      alert(`Not a valid input`)
+      return
+    }
+
+
+    let container = document.querySelector(`.js-cart-item-container-${product_id}`)
+    container.classList.remove(`is_editing_quantity`)
+
+    document.querySelector(`.js_quantity_label_${product_id}`).innerHTML = new_value
+    calculate_cart_quantity()
+
+    console.log(cart)
+  })
+})
+
+
+document.querySelectorAll(`.quantity_input`).forEach((input) => {
+
+   input.addEventListener(`keydown`, (event) => {
+
+    if (event.key === `Enter`){
+
+      let product_id = input.dataset.productId;
+
+      console.log(product_id)
+
+      let input_button = document.querySelector(`.input_${product_id}`).value
+  
+      let new_value = Number(input_button)
+  
+      
+  
+      update_quantity(product_id, new_value)
+
+      if (new_value < 0 ){
+        alert(`Not a valid input`)
+        return
+      }
+  
+  
+      let container = document.querySelector(`.js-cart-item-container-${product_id}`)
+      container.classList.remove(`is_editing_quantity`)
+  
+      document.querySelector(`.js_quantity_label_${product_id}`).innerHTML = new_value
+      calculate_cart_quantity()
+  
+      console.log(cart)
+    }
+
+   })
 })

@@ -209,3 +209,19 @@
   margin-top: 11px;
   margin-bottom: 15px;
 }
+.quantity_input{
+  width:30px
+}
+.quantity_input, .save_quantity_link{
+  display: none;
+}
+.display{
+  display: initial;
+}
+/* This piece of css styles element with .quantity_input class inside an element with a class of .is_editing_quantity*/
+.is_editing_quantity .quantity_input, .is_editing_quantity .save_quantity_link{
+  display: initial;
+}
+.is_editing_quantity .quantity-label, .is_editing_quantity .update-quantity-link{
+  display: none;
+}
