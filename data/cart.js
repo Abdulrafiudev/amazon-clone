@@ -104,10 +104,3 @@ export function update_delivery_date(product_id, delivery_options_id){
 
 }
 
-export function calculate_item(){
-  let cart_quantity = 0;
-
-  cart.forEach((cart_items) => {
-       cart_quantity+= cart_items.quantity
-     })
-}

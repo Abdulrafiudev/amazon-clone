@@ -1,9 +1,11 @@
-import { cart, calculate_item } from "../../data/cart.js";
+import { cart,  } from "../../data/cart.js";
 import { products } from "../../data/products.js";
 import { delivery_options } from "../../data/delivery_options.js";
 
 
-calculate_item();
+
+
+
 
 export function payment_order_summary(){
 
@@ -84,6 +86,17 @@ export function payment_order_summary(){
   
   `
   document.querySelector(`.payment-summary`).innerHTML = payment_html
+  
+  
+      function calculate_item(){
+        let cart_quantity = 0;
+
+        cart.forEach((cart_items) => {
+            cart_quantity+= cart_items.quantity
+          })
+          document.querySelector(`.item`).innerHTML = `Items(${cart_quantity}):`
+      }
+      calculate_item()
   
   
   

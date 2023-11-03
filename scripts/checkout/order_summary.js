@@ -2,6 +2,7 @@ import {cart, remove_from_cart, calculate_cart_quantity, update_quantity, update
 import {products} from "../../data/products.js"
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"
 import { delivery_options } from "../../data/delivery_options.js"
+import { payment_order_summary } from "./payment_summary.js"
 
 
 
@@ -203,17 +204,24 @@ export function render_order_summary(){
 
       update_quantity(product_id, new_value)
 
+      
+  
+
       if (new_value < 0 ){
         alert(`Not a valid input`)
-        return
+      
       }
-
-
-      let container = document.querySelector(`.js-cart-item-container-${product_id}`)
+      else{
+        payment_order_summary()
+        let container = document.querySelector(`.js-cart-item-container-${product_id}`)
       container.classList.remove(`is_editing_quantity`)
 
       document.querySelector(`.js_quantity_label_${product_id}`).innerHTML = new_value
       calculate_cart_quantity()
+      }
+
+
+      
 
       console.log(cart)
     }
@@ -228,6 +236,7 @@ export function render_order_summary(){
 
         update_delivery_date(product_id, delivery_options_id)
         render_order_summary()
+        payment_order_summary()
         
 
       
