@@ -64,9 +64,13 @@ export function remove_from_cart(product_id){
        cart_quantity+= cart_items.quantity
      })
      document.querySelector(`.return-to-home-link`).innerHTML = `${cart_quantity} items`
+     
+     
 
   
 }
+
+
 export function update_quantity(product_id, new_value){
   let matching_items;
 
@@ -75,6 +79,7 @@ export function update_quantity(product_id, new_value){
     if(cart_items.product_id === product_id){
       matching_items = cart_items
     }
+    
 
   })
 
@@ -97,4 +102,12 @@ export function update_delivery_date(product_id, delivery_options_id){
   matching_items.delivery_options_id = delivery_options_id
   save_to_storage()
 
+}
+
+export function calculate_item(){
+  let cart_quantity = 0;
+
+  cart.forEach((cart_items) => {
+       cart_quantity+= cart_items.quantity
+     })
 }
