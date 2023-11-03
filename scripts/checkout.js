@@ -1,5 +1,18 @@
 import {cart, remove_from_cart, calculate_cart_quantity, update_quantity} from "../data/cart.js"
 import {products} from "../data/products.js"
+import {hello} from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js"
+import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"
+import { delivery_options } from "../data/delivery_options.js"
+
+
+hello()
+
+let todays_date = dayjs()
+//This add to hr current time. It takes to parameter the first is the number we want to add and the second is the length of time like hours, days, years
+let delivery_date = todays_date.add(7, `days`)
+
+let todays_date_7 = delivery_date.format(`dddd, MMMM D`)
+console.log(todays_date_7)
 
 calculate_cart_quantity()
 let cart_summary_html=``;
@@ -16,12 +29,25 @@ cart.forEach((cart_items) => {
       matching_products = product
      }
   });
-  
+
+  let delivery_option_id = cart_items.delivery_options_id
+
+  let options;
+
+  delivery_options.forEach((delivery_options) => {
+     if (delivery_options.id === delivery_option_id){
+      options = delivery_options;
+     }
+  })
+  let todays_date = dayjs()
+  let delivery_date = todays_date.add(options.delivery_days, `days`)
+  let date_string = delivery_date.format(`dddd, MMMM D`)
+
   cart_summary_html+=
 
           `<div class="cart-item-container js-cart-item-container-${matching_products.id}">
               <div class="delivery-date">
-                Delivery date: Tuesday, June 21
+                Delivery date: ${date_string}
               </div>
 
               <div class="cart-item-details-grid">
@@ -54,45 +80,11 @@ cart.forEach((cart_items) => {
                   <div class="delivery-options-title">
                     Choose a delivery option:
                   </div>
-                  <div class="delivery-option">
-                    <input type="radio" checked
-                      class="delivery-option-input"
-                      name="delivery-option-${matching_products.id}">
-                    <div>
-                      <div class="delivery-option-date">
-                        Tuesday, June 21
-                      </div>
-                      <div class="delivery-option-price">
-                        FREE Shipping
-                      </div>
-                    </div>
-                  </div>
-                  <div class="delivery-option">
-                    <input type="radio"
-                      class="delivery-option-input"
-                      name="delivery-option-${matching_products.id}">
-                    <div>
-                      <div class="delivery-option-date">
-                        Wednesday, June 15
-                      </div>
-                      <div class="delivery-option-price">
-                        $4.99 - Shipping
-                      </div>
-                    </div>
-                  </div>
-                  <div class="delivery-option">
-                    <input type="radio"
-                      class="delivery-option-input"
-                      name="delivery-option-${matching_products.id}">
-                    <div>
-                      <div class="delivery-option-date">
-                        Monday, June 13
-                      </div>
-                      <div class="delivery-option-price">
-                        $9.99 - Shipping
-                      </div>
-                    </div>
-                  </div>
+
+                   ${delivery_options_html(matching_products, cart_items)}
+                 
+              
+                  
                 </div>
               </div>
           </div>
@@ -106,6 +98,41 @@ cart.forEach((cart_items) => {
 
 
 })
+
+function delivery_options_html(matching_products, cart_items){
+  let html = ``
+  delivery_options.forEach((delivery_options) => {
+
+    let todays_date = dayjs()
+    let delivery_date = todays_date.add(delivery_options.delivery_days, `days`)
+    let date_string = delivery_date.format(`dddd, MMMM D`)
+
+    let price_string = delivery_options.price_cents === 0 ? `FREE shippng` : `$${delivery_options.price_cents * 0.01.toFixed(2)}- Shipping`;
+
+    let is_checked = delivery_options.id === cart_items.delivery_options_id
+    
+    html+=
+            `
+              <div class="delivery-option">
+                <input type="radio" ${is_checked ? `checked` : ``}
+                  class="delivery-option-input"
+                  name="delivery-option-${matching_products.id}">
+                <div>
+                  <div class="delivery-option-date">
+                    ${date_string}
+                  </div>
+                  <div class="delivery-option-price">
+                    ${price_string}
+                  </div>
+                </div>
+              </div>
+            `
+            
+  })
+
+return html
+
+}
 
 
 
@@ -149,26 +176,9 @@ document.querySelectorAll(`.save_quantity_link`).forEach((save_link) => {
    
     let product_id = save_link.dataset.productId;
     console.log(product_id)
-    let input_button = document.querySelector(`.input_${product_id}`).value
-
-    let new_value = Number(input_button)
-
     
 
-    update_quantity(product_id, new_value)
-    if (new_value < 0 ){
-      alert(`Not a valid input`)
-      return
-    }
-
-
-    let container = document.querySelector(`.js-cart-item-container-${product_id}`)
-    container.classList.remove(`is_editing_quantity`)
-
-    document.querySelector(`.js_quantity_label_${product_id}`).innerHTML = new_value
-    calculate_cart_quantity()
-
-    console.log(cart)
+    make_save_link_interactive(product_id)
   })
 })
 
@@ -183,28 +193,34 @@ document.querySelectorAll(`.quantity_input`).forEach((input) => {
 
       console.log(product_id)
 
-      let input_button = document.querySelector(`.input_${product_id}`).value
-  
-      let new_value = Number(input_button)
-  
-      
-  
-      update_quantity(product_id, new_value)
+      make_save_link_interactive(product_id)
 
-      if (new_value < 0 ){
-        alert(`Not a valid input`)
-        return
-      }
-  
-  
-      let container = document.querySelector(`.js-cart-item-container-${product_id}`)
-      container.classList.remove(`is_editing_quantity`)
-  
-      document.querySelector(`.js_quantity_label_${product_id}`).innerHTML = new_value
-      calculate_cart_quantity()
-  
-      console.log(cart)
+     
     }
 
    })
 })
+
+function make_save_link_interactive(product_id){
+  let input_button = document.querySelector(`.input_${product_id}`).value
+  
+  let new_value = Number(input_button)
+
+  
+
+  update_quantity(product_id, new_value)
+
+  if (new_value < 0 ){
+    alert(`Not a valid input`)
+    return
+  }
+
+
+  let container = document.querySelector(`.js-cart-item-container-${product_id}`)
+  container.classList.remove(`is_editing_quantity`)
+
+  document.querySelector(`.js_quantity_label_${product_id}`).innerHTML = new_value
+  calculate_cart_quantity()
+
+  console.log(cart)
+}
