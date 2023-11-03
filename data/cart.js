@@ -81,3 +81,20 @@ export function update_quantity(product_id, new_value){
   matching_items.quantity = new_value;
   save_to_storage()
 }
+
+export function update_delivery_date(product_id, delivery_options_id){
+
+  let matching_items;
+
+  cart.forEach((cart_items) => {
+
+    if(cart_items.product_id === product_id){
+      matching_items = cart_items;
+    }
+
+  })
+
+  matching_items.delivery_options_id = delivery_options_id
+  save_to_storage()
+
+}
