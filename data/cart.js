@@ -103,4 +103,14 @@ export function update_delivery_date(product_id, delivery_options_id){
   save_to_storage()
 
 }
+export function new_cart(product_id){
+  let new_cart = [];
+  cart.forEach((cart_items) => {
 
+    if (cart_items.product_id === product_id){
+      new_cart.push(cart_items)
+    }
+
+  })
+  console.log(new_cart)
+}

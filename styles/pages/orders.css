@@ -25,7 +25,7 @@
   row-gap: 50px;
 }
 
-.order-header {
+.order-header, .order_header_2 {
   background-color: rgb(240, 242, 242);
   border: 1px solid rgb(213, 217, 217);
 
@@ -37,6 +37,7 @@
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
+
 
 .order-header-left-section {
   display: flex;

@@ -56,14 +56,14 @@ products.forEach((product) => {
       </button>
     </div>`
     
-})
+});
 
-document.querySelector(`.products-grid`).innerHTML = product_html
+document.querySelector(`.products-grid`).innerHTML = product_html;
 
 let time_interval;
 
 
-function update_cart_quantity(){
+  function update_cart_quantity(){
    let cart_quantity = 0;
 
    cart.forEach((cart_items) => {

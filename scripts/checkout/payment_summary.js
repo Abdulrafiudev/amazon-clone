@@ -1,4 +1,4 @@
-import { cart,  } from "../../data/cart.js";
+import { cart, remove_from_cart, calculate_cart_quantity , new_cart } from "../../data/cart.js";
 import { products } from "../../data/products.js";
 import { delivery_options } from "../../data/delivery_options.js";
 
@@ -12,6 +12,7 @@ export function payment_order_summary(){
   let total_product_price = 0;
 
   let shipping_price = 0;
+  let payment_html = ''
 
   cart.forEach((cart_items) => {
 
@@ -40,13 +41,13 @@ export function payment_order_summary(){
 
     shipping_price += options.price_cents * 0.01
 
-  })
+  
 
   let total_before_tax = total_product_price + shipping_price;
   let total_after_price = total_before_tax * 0.1
   let total = total_product_price + shipping_price + total_before_tax + total_after_price
 
-  let payment_html = `
+   payment_html = `
       <div class="payment-summary-title">
             Order Summary
       </div>
@@ -75,9 +76,11 @@ export function payment_order_summary(){
         <div class="payment-summary-money">$${total.toFixed(2)}</div>
       </div>
 
-      <button class="place-order-button button-primary">
-        Place your order
-      </button>
+      <a href="../../orders.html" >
+        <button class="place-order-button button-primary" data-product-id = "${matching_products.id}">
+          Place your order
+        </button>
+      </a>
   
   
   
@@ -85,6 +88,7 @@ export function payment_order_summary(){
   
   
   `
+})
   document.querySelector(`.payment-summary`).innerHTML = payment_html
   
   
@@ -97,6 +101,25 @@ export function payment_order_summary(){
           document.querySelector(`.item`).innerHTML = `Items(${cart_quantity}):`
       }
       calculate_item()
+
+
+      document.querySelectorAll(`.place-order-button`).forEach((button) => {
+        
+        button.addEventListener(`click`, () => {
+          
+          let product_id =  button.dataset.productId
+
+          console.log(product_id)
+
+
+          
+        
+          
+        })
+
+      })
+
+   
   
   
   

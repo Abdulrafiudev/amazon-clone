@@ -140,6 +140,7 @@ export function render_order_summary(){
           let container = document.querySelector(`.js-cart-item-container-${product_id}`)
           container.remove()
           calculate_cart_quantity()
+          payment_order_summary()
         })
     });
 
@@ -245,3 +246,4 @@ export function render_order_summary(){
 
     })
 }
+
